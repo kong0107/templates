@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Template 02: Logo and Tabs</title>
+		<style>
+/**
+ * Inherit from the previous document.
+ *
+ * @see `01-footer-at-bottom.html`
+ */
+html {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+body {
+	margin: 0;
+	padding: 0;
+	min-height: 100%;
+	position: relative;
+}
+body > header {
+	overflow: hidden;
+}
+body > section {
+	padding-bottom: 2em;
+}
+body > footer {
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	box-sizing: border-box;
+}
+
+
+/**
+ * Subject of this page: inline header.
+ *
+ * Use inline-block or float elements instead of table.
+ * This is for RWD.
+ */
+body > header > * {
+	display: inline-block;
+}
+nav > ul > li {
+	display: inline-block;
+}
+
+/**
+ * Personal styling.
+ *
+ * Note that there would be a "focus border" for `input[type=text]`
+ * while it's focused.
+ */
+* {
+	transition: all 1s;
+}
+body > header {
+	background-color: #000;
+	color: #fff;
+}
+body > header a {
+	color: inherit;
+	text-decoration: none;
+}
+#brand {
+	font-size: xx-large;
+	font-weight: bold;
+	margin: 0 1em;
+}
+header li {
+	padding: .3em 1em;
+	border: 1px solid #ccc;
+}
+header li:hover {
+	background-color: #444;
+}
+#searchBar {
+	float: right;
+	margin: 1em;
+	position: relative; /* For submit button */
+}
+#searchBar > input[type=text] {
+	padding: .3em 4em .3em .3em;
+}
+#searchBar > input[type=submit],
+#searchBar > input[type=image] {
+	position: absolute;
+	margin: .2em;
+	right: 0;
+	top: 0;
+}
+body > footer {
+	background-color: #000;
+	color: #fff;
+	text-align: center;
+	padding: .5em;
+}
+		</style>
+	</head>
+	<body>
+		<header>
+			<a id="brand" href="./">Logo</a>
+			<nav>
+				<ul>
+					<li><a href="#">January</a></li>
+					<li><a href="#">February</a></li>
+					<li><a href="#">March</a></li>
+					<li><a href="#">April</a></li>
+					<li><a href="#">May</a></li>
+				</ul>
+			</nav>
+			<form id="searchBar">
+				<input type="text" placeholder="Search">
+				<input type="submit">
+			</form>
+		</header>
+		<section>
+			<h1>Page Title</h1>
+			<p>
+				You can change the submit button to an
+				<a href="http://www.w3.org/TR/html-markup/input.image.html#input.image"><code>&lt;input type="image"&gt;</code></a>.
+			</p>
+		</section>
+		<footer>Footer</footer>
+	</body>
+</html>

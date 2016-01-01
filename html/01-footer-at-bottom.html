@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Template 01: Footer at Bottom</title>
+		<style>
+/**
+ * Subject of this page.
+ *
+ * @see http://cssreset.com/how-to-keep-footer-at-bottom-of-page-with-css/
+ */
+html {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+body {
+	margin: 0;
+	padding: 0;
+	min-height: 100%;
+	position: relative;
+}
+body > section {
+	padding-bottom: 2em; /* reserved for height of footer */
+}
+body > footer {
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+/**
+ * For collapsing margins.
+ *
+ * @see http://www.chming.tw/blog/2014/09/03/collapsing-margins/
+ */
+body > header {
+	overflow: hidden; /* for collapsing margins; see page content. */
+}
+/*body:before {
+	content: "";
+	display: block;
+	overflow: auto;
+}*/
+
+/**
+ * Adjustment.
+ */
+body > footer {
+	box-sizing: border-box; /* in case the footer has nonzero horizontal padding */
+}
+
+/**
+ * Personal styling.
+ */
+body > header {
+	background-color: #000;
+	color: #fff;
+}
+body > footer {
+	background-color: #000;
+	color: #fff;
+	text-align: center;
+	padding: .5em;
+}
+
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>Keep Footer at the Bottom of the Page</h1>
+		</header>
+		<section>
+			<p>There's a footer at the bottom of the page, and works fine even if the content is long.</p>
+			<p>
+				Reference
+				<a href="http://cssreset.com/how-to-keep-footer-at-bottom-of-page-with-css/">this article</a>
+				and solve
+				<a href="http://www.chming.tw/blog/2014/09/03/collapsing-margins/">collapsing margins</a>
+				by setting header <code>overflow: hidden</code>.
+			</p>
+			<p>
+				Delete the style for <code>body &gt; header</code> to see what's the problem of collapsing margins.
+				Or you may use hit1205's method, which is commented in the code.
+			</p>
+			<div style="resize: both; height: 10em; width: 20em; overflow: auto; background-color: #ff0;">
+				<p>Resize this element to show what happens to the footer if this reaches the bottom of the page.</p>
+			</div>
+		</section>
+		<footer>Footer</footer>
+	</body>
+</html>
