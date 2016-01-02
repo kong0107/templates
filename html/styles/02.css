@@ -40,10 +40,11 @@ body > footer {
  * Subject of this page: inline header.
  *
  * This used to be `display: inline-block`, but that cause it behaves differently
- * for `<style>` and `<link>` on Chrome (in Windows and Android). See 
- * what's different on the nav button while refreshing this page on Chrome 
+ * for `<style>` and `<link>` on Chrome (in Windows and Android). See
+ * what's different on the nav button while refreshing this page on Chrome
  * and other browsers.
- * Also note that using table for positioning is not a good idea for RWD.
+ * Also note that using table for positioning is not a good idea for RWD
+ * unless you use `@media screen` or `<link media="screen">`.
  */
 body > header > * {
 	float: left;

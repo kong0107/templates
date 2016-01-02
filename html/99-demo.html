@@ -26,23 +26,69 @@
 		</header>
 		<section>
 			<h1>Demostration</h1>
-			
+			<h2>H2</h2>
+			<h3>H3</h3>
+			<h4>H4</h4>
+			<h5>H5</h5>
+			<h6>H6</h6>
+			<p>Paragraph</p>
+
 			<section>
 				<h2>Table</h2>
-				<div class="dlTable">
-					<dl><dt>OK</dt><dd>200</dd></dl>
-					<dl><dt>Not Found</dt><dd>404</dd></dl>
-					<dl><dt>Internal Server Error</dt><dd>500</dd></dl>
+				<div class="table">
+					<header>Caption of the table</header>
+					<div class="tableRow">
+						<div class="tableCell"></div>
+						<div class="tableCell">a</div>
+						<div class="tableCell">ab</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">abc</div>
+						<div class="tableCell">abcd</div>
+						<div class="tableCell">abcde</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">abcdef</div>
+						<div class="tableCell">abcdefg</div>
+						<div class="tableCell">abcdefgh</div>
+					</div>
+				</div>
+				<h3>for name-value pairs</h3>
+				<form>
+					<div class="dlTable">
+						<dl><dt>Username</dt><dd><input type="text"></dd></dl>
+						<dl><dt>Password</dt><dd><input type="password"></dd></dl>
+						<dl>
+							<dt>Gender</dt>
+							<dd>
+								<ul class="inlineList">
+									<li><label><input type="radio" name="abc" value="1">Female</label></li>
+									<li><label><input type="radio" name="abc" value="2">Male</label></li>
+									<li><label><input type="radio" name="abc" value="3">Other</label></li>
+								</ul>
+							</dd>
+						</dl>
+						<dl>
+							<dt>Options</dt>
+							<dd>
+								<ul style="list-style-type: none;">
+									<li><label><input type="radio" name="qq" value="1">longer options</label></li>
+									<li><label><input type="radio" name="qq" value="2">each option is shown in its own line</label></li>
+									<li><label><input type="radio" name="qq" value="3">option three</label></li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
+				</form>
+			</section>
+
+			<section>
+				<h2>Texts</h2>
+				<div class="rawdata">
+					Whitespace is preserved by the browser. Text will wrap when necessary, and on line breaks in this element.
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus suscipit nulla a ipsum hendrerit accumsan. In hac habitasse platea dictumst. Donec eget mauris rutrum, sollicitudin elit id, convallis eros. Nam aliquet, mi eu blandit ullamcorper, felis nisl molestie nunc, id gravida ante mauris id urna. Donec aliquam ligula sit amet tellus suscipit aliquet. Duis non faucibus magna, ac pellentesque nisl. In sit amet sodales quam. Nulla facilisi. Morbi fringilla facilisis mollis. Sed porta a justo id aliquam. Ut maximus suscipit ante, sed euismod dolor. Nulla facilisi.
 				</div>
 			</section>
-			
-			<div class="rawdata">{{model|json}}</div>
-			
-			<p class="rawdata">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus suscipit nulla a ipsum hendrerit accumsan. In hac habitasse platea dictumst. Donec eget mauris rutrum, sollicitudin elit id, convallis eros. Nam aliquet, mi eu blandit ullamcorper, felis nisl molestie nunc, id gravida ante mauris id urna. Donec aliquam ligula sit amet tellus suscipit aliquet. Duis non faucibus magna, ac pellentesque nisl. In sit amet sodales quam. Nulla facilisi. Morbi fringilla facilisis mollis. Sed porta a justo id aliquam. Ut maximus suscipit ante, sed euismod dolor. Nulla facilisi.</p>
-			<p>Phasellus gravida eu velit eget sodales. Vivamus vitae velit ac ligula gravida egestas at id enim. Donec posuere felis metus, id euismod velit condimentum at. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec mollis ornare felis at lobortis. Proin eu diam nec purus venenatis consectetur. Sed molestie mi velit, at posuere nisl blandit sed. Cras varius eget dolor eget pulvinar. Vestibulum mollis feugiat nunc. Vivamus vel urna eget quam hendrerit sollicitudin id in sem. Sed bibendum nisl justo, eget cursus leo tincidunt quis.</p>
-			<p>Etiam nec malesuada massa. Maecenas in nulla laoreet, ultrices nunc at, mattis tortor. Sed tincidunt, purus eget accumsan consectetur, lacus magna sagittis justo, vitae varius lectus tortor nec orci. Aliquam efficitur, augue quis viverra porttitor, massa velit tincidunt turpis, id fringilla lacus ligula eget sem. Curabitur hendrerit lorem at nisl placerat dictum. Pellentesque posuere sagittis dapibus. Donec eget finibus libero, tempor malesuada odio. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam ornare convallis lacus, sit amet ornare leo gravida varius. Nam ultricies pretium lacus eu tincidunt. Quisque imperdiet lectus in elit pharetra, quis lobortis metus ultricies. Donec vel magna in ligula molestie ullamcorper consequat eget urna. Aenean est justo, iaculis vitae augue sit amet, rhoncus elementum odio. Nunc eleifend ex eu felis ornare, sed rhoncus urna porta.</p>
-			<p>Donec rutrum odio leo, a mattis felis tempus ut. Morbi hendrerit consequat eros, vel lacinia sapien. Quisque tincidunt vel quam eu gravida. Morbi elit eros, semper ac augue quis, bibendum imperdiet turpis. Suspendisse fermentum dignissim eleifend. Suspendisse potenti. Maecenas scelerisque, nisl pellentesque eleifend sodales, libero ligula gravida mauris, eget auctor tortor justo aliquet turpis. Ut ornare lorem a diam dapibus blandit.</p>
-			<p>Quisque bibendum quis purus maximus tincidunt. Fusce convallis dignissim enim, eget hendrerit est euismod non. Morbi ut vulputate nisl. Sed varius odio nec consequat semper. Integer ac turpis in nisi feugiat accumsan ut eget urna. Duis tincidunt erat in lorem imperdiet vestibulum. Ut at neque nisi. Aenean dapibus massa sit amet tellus hendrerit ornare. Donec sem turpis, tincidunt vel urna a, convallis venenatis lacus. Pellentesque pellentesque arcu sem, sed pretium nibh pellentesque eget. Aliquam erat volutpat. Mauris et sapien sem. Nullam sollicitudin sem ut volutpat elementum.</p>
 		</section>
 		<footer>Footer</footer>
 	</body>
