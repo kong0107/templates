@@ -1,7 +1,6 @@
 /**
  * This file shall apply to a specific site.
  */
-* { transition: all 1s; }
 
 /**
  * Header
@@ -11,7 +10,7 @@ body > header {
 	color: #fff;
 }
 body > header > * {
-	display: inline-block;
+	float: left;
 }
 body > header a {
 	color: inherit;
@@ -22,23 +21,22 @@ body > header a {
 	font-weight: bold;
 	margin: 0 1em;
 }
-#siteNav {
-
-}
 #siteNav li {
 	list-style-type: none;
 	display: inline-block;
 	margin: .5em;
 	padding: .3em .5em;
 	border: 1px solid #ccc;
+	background-color: #444;
 }
 #siteNav li:hover {
-	background-color: #444;
+	background-color: #000;
+	color: #ff0;
 }
 #searchBar {
 	float: right;
 	margin: 1em;
-	position: relative; /* For submit button */
+	position: relative;
 }
 #searchBar > input[type=text] {
 	padding: .3em 4em .3em .3em;
@@ -54,8 +52,16 @@ body > header a {
 /**
  * Content
  */
- 
- 
+.dlTable > dl > dt { font-weight: bold; }
+.tableCell,
+.dlTable > dl > dt,
+.dlTable > dl > dd {
+	padding: .3em;
+	border: 1px solid #000;
+}
+
+
+
 /**
  * Footer
  */

@@ -14,9 +14,6 @@ body {
 	min-height: 100%;
 	position: relative;
 }
-body > section {
-	padding-bottom: 2em; /* reserved for height of footer */
-}
 body > footer {
 	width: 100%;
 	position: absolute;
@@ -41,12 +38,18 @@ body > header {
 /**
  * Adjustment.
  */
-body > header:after,
-body > section:after {
+body > header:after {
 	/* in case there are floating elements in them */
 	content: "";
 	display: block;
 	clear: both;
+}
+body > section:after {
+	content: "";
+	display: block;
+	clear: both;
+	/* reserved for the height of the footer */
+	padding-bottom: 2em;
 }
 body > footer {
 	box-sizing: border-box; /* in case the footer has nonzero horizontal padding */
