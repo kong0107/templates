@@ -1,0 +1,67 @@
+/**
+ * Subject of this page.
+ *
+ * @see http://cssreset.com/how-to-keep-footer-at-bottom-of-page-with-css/
+ */
+html {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+body {
+	margin: 0;
+	padding: 0;
+	min-height: 100%;
+	position: relative;
+}
+body > section {
+	padding-bottom: 2em; /* reserved for height of footer */
+}
+body > footer {
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+/**
+ * For collapsing margins.
+ *
+ * @see http://www.chming.tw/blog/2014/09/03/collapsing-margins/
+ */
+body > header {
+	overflow: hidden; /* for collapsing margins; see page content. */
+}
+/*body:before {
+	content: "";
+	display: block;
+	overflow: auto;
+}*/
+
+/**
+ * Adjustment.
+ */
+body > header:after,
+body > section:after {
+	/* in case there are floating elements in them */
+	content: "";
+	display: block;
+	clear: both;
+}
+body > footer {
+	box-sizing: border-box; /* in case the footer has nonzero horizontal padding */
+}
+
+/**
+ * Personal styling.
+ */
+body > header {
+	background-color: #000;
+	color: #fff;
+}
+body > footer {
+	background-color: #000;
+	color: #fff;
+	text-align: center;
+	padding: .5em;
+}
