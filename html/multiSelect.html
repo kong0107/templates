@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>不使用 JavaScript 製作縮合選單</title>
+    <style>
+        /**
+         * 基本設定，跟功能無關。
+         */
+        h1 {font-size: 1.6rem}
+        h2 {font-size: 1.5rem}
+        p {margin: 0 0 .5em 0}
+        [type=checkbox], label {cursor: pointer}
+
+        /**
+         * 隱藏起來的核取方塊，本功能的關鍵核心。
+         * 被勾選時，為檢視狀態，隱藏選單中未勾選的；
+         * 未勾選時，為編輯狀態，顯示選單中所有選項。
+         */
+        .multi-select-control {
+            display: none;
+        }
+
+        /**
+         * 選項們，結構上以無序列表呈現。
+         * 設定最大高度，以利選項太多時不會占掉視窗太多空間。
+         */
+        .multi-select-control + ul {
+            margin: 0;
+            padding: .5em 0;
+            list-style-type: none;
+            overflow-y: auto;
+            transition: .5s;
+            max-height: 6em;
+        }
+
+        /**
+         * 編輯與儲存按鈕
+         */
+        .multi-select-control ~ label {
+            display: inline-block;
+            border: 1px solid #ccc;
+            padding: .1em .3em;
+            border-radius: .5em;
+        }
+
+        /**** 檢視狀態 ****/
+
+        /**
+         * 僅以橫向串接方式顯示被勾選的選項們。
+         *
+         * 本來想將項目們設為 inline-block ，但會有「項目間空白字元占掉畫面空間」的問題，故改為將容器設為 flex。
+         * 參閱： https://css-tricks.com/fighting-the-space-between-inline-block-elements/
+         */
+        .multi-select-control:checked + ul {
+            display: flex;
+            max-height: 3em;
+        }
+
+        /**
+         * 被勾選的選項的文字
+         */
+        .multi-select-control:checked + ul input:checked ~ span {
+            display: inline-block;
+            border: 1px solid #ccc;
+            margin-right: .3em;
+            padding: .1em .3em;
+        }
+
+        /**
+         * 隱藏下列項目：
+         * * 儲存按鈕
+         * * 選項們的核取方塊
+         * * 未勾選的選項的文字
+         * * 進階：已勾選的選項的 label （以避免使用者點擊後造成該選項被取消勾選）
+         */
+        .multi-select-control:checked ~ .multi-select-save,
+        .multi-select-control:checked + ul input,
+        .multi-select-control:checked + ul input:not(:checked) ~ *,
+        .multi-select-control:checked + ul input + label {
+            display: none;
+        }
+
+        /**** 編輯狀態 ****/
+        /**
+         * 隱藏下列項目：
+         * * 編輯按鈕
+         * * 進階：檢視狀態下用於代表選項的文字
+         */
+        .multi-select-control:not(:checked) ~ .multi-select-edit,
+        .multi-select-control:not(:checked) + ul input + label + * {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>不使用 JavaScript 製作縮合選單</h1>
+    <section>
+        <h2>基本原理</h2>
+        <p>關鍵在於使用隱藏的 checkbox 來區分「檢視狀態」與「編輯狀態」，並利用 CSS selector ，讓該 checkbox 後面的元件有不同的顯示方式。</p>
+        <input type="checkbox" class="multi-select-control" id="multi-select-control-01" checked>
+        <ul>
+            <li><input type="checkbox"><span>A</span></li>
+            <li><input type="checkbox"><span>B</span></li>
+            <li><input type="checkbox" checked><span>C</span></li>
+            <li><input type="checkbox"><span>D</span></li>
+            <li><input type="checkbox" checked><span>E</span></li>
+            <li><input type="checkbox"><span>F</span></li>
+            <li><input type="checkbox"><span>G</span></li>
+        </ul>
+        <label class="multi-select-edit" for="multi-select-control-01">編輯</label>
+        <label class="multi-select-save" for="multi-select-control-01">儲存</label>
+    </section>
+
+    <section>
+        <h2>常見需求</h2>
+        <ul>
+            <li>表單要送出，所以選項們的 checkbox 需要有（相同的） name ，依不同機制也可能要有 value 。</li>
+            <li>編輯狀態下，滑鼠按到選項文字時，應該也要讓前方 checkbox 有變化，故要有 label 。</li>
+            <li>為了讓 CSS 可以指定到選項 label ，故不能採取「用 label 包住 input 」的做法，從而 checkbox 要有（不同的） id ，且 label 要有 for 。</li>
+            <li>檢視狀態下，點選文字時「不能」觸發取消勾選的效果，故檢視狀態時要另外用 span 來顯示文字。（或是另外用 JavaScript 避開 label 的預設效果）</li>
+        </ul>
+        <input type="checkbox" class="multi-select-control" id="multi-select-control-02" checked>
+        <ul>
+            <li><input type="checkbox" id="ms02-A" name="ms02[]" value="A"><label for="ms02-A">選項A的完整描述</label><span title="選項的完整描述">「A」</span></li>
+            <li><input type="checkbox" id="ms02-B" name="ms02[]" value="B"><label for="ms02-B">選項B的完整描述</label><span title="選項的完整描述">「B」</span></li>
+            <li><input type="checkbox" id="ms02-C" name="ms02[]" value="C" checked><label for="ms02-C">選項C的完整描述</label><span title="選項的完整描述">「C」</span></li>
+            <li><input type="checkbox" id="ms02-D" name="ms02[]" value="D"><label for="ms02-D">選項D的完整描述</label><span title="選項的完整描述">「D」</span></li>
+            <li><input type="checkbox" id="ms02-E" name="ms02[]" value="E" checked><label for="ms02-E">選項E的完整描述</label><span title="選項的完整描述">「E」</span></li>
+            <li><input type="checkbox" id="ms02-F" name="ms02[]" value="F"><label for="ms02-F">選項F的完整描述</label><span title="選項的完整描述">「F」</span></li>
+            <li><input type="checkbox" id="ms02-G" name="ms02[]" value="G"><label for="ms02-G">選項G的完整描述</label><span title="選項的完整描述">「G」</span></li>
+        </ul>
+        <label class="multi-select-edit" for="multi-select-control-02">編輯</label>
+        <label class="multi-select-save" for="multi-select-control-02">儲存</label>
+    </section>
+</body>
+</html>

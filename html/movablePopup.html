@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movable Popup: fixed and absolute position</title>
+<style type="text/css">
+.popup {
+    border: 1px solid gray;
+    padding: 0 1em;
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(70deg, #f00, pink);
+}
+.popup-press-to-move {
+    border: 1px solid green;
+    font-weight: bold;
+    cursor: grab;
+    margin: .5em;
+    padding: .2em .5em;
+}
+
+.popup-fixed {
+    position: fixed;
+    top: 400px;
+    left: 500px;
+}
+.popup-absolute {
+    position: absolute;
+    top: 100px;
+    left: 200px;
+}
+</style>
+</head>
+<body>
+<!-- <div class="other-absolute-container" style="position: absolute; top: 30px; left: 50px; width: 600px; height: 500px; border: 1px solid red; overflow: scroll;"> -->
+    <div class="popup popup-fixed">
+        <header class="popup-press-to-move">press and drag to move</header>
+        Fixed elements are positioned relative to their own initial containing block established by the viewport.
+    </div>
+    <div class="popup popup-absolute">
+        <header class="popup-press-to-move">press and drag to move</header>
+        Absolute-positioned elements are positioned relative to its closest positioned ancestor.
+    </div>
+<!-- </div> -->
+<div style="width: 2000px; height: 1000px; border: 1px solid blue;">
+    <p>This implement is NOT about `<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API">draggable</a>`.</p>
+    <p>Scroll to other position to see the difference between `fixed` and `absolute` position. And note that codes fit to each situation are different.</p>
+    <p>Listen `mousedown` event on button elements. However, `mousemove` and `mouseup` shall be listened on the containing block.</p>
+</div>
+<!-- <div id="debug"></div> -->
+<script>
+    // TODO: scroll event 不會有 event.pageX, event.pageY
+    // TODO: 被其他定位元素包住的情形
+
+
+    function averageTouchPosition(touchList) {
+        const position = {};
+        touchList = Array.from(touchList);
+        ["screenX", "screenY", "clientX", "clientY", "pageX", "pageY"].forEach(prop => {
+            position[prop] = touchList.reduce((inter, cur) => inter + cur[prop], 0) / touchList.length;
+        });
+        return position;
+    }
+
+    function sumOffsetOfAncestors(elem) {
+        const offset = {x: 0, y: 0, left: 0, top: 0};
+        while(elem = elem.offsetParent) {
+            if(elem == document.body) break;
+            const rect = elem.getBoundingClientRect();
+            for(let prop in offset) offset[prop] += rect[prop];
+        }
+        return offset;
+    }
+
+
+    document.querySelectorAll(".popup").forEach(popup => {
+        const button = popup.querySelector(".popup-press-to-move");
+        if(!button) return;
+
+        let dragging = false, offsetX, offsetY;
+        const isAbs = popup.classList.contains("popup-absolute");
+        const dragStart = event => {
+            dragging = true;
+            const rect = popup.getBoundingClientRect();
+            offsetX = event.pageX - rect.left - isAbs * window.scrollX;
+            offsetY = event.pageY - rect.top - isAbs * window.scrollY;
+            console.debug("mousedown");
+        };
+        const dragGoing = event => {
+            if(!dragging) return;
+            const left = event.pageX - offsetX;
+            const top = event.pageY - offsetY;
+            const cs = getComputedStyle(popup);
+            popup.style.left = `calc(${left}px - ${cs.marginLeft})`;
+            popup.style.top = `calc(${top}px - ${cs.marginTop})`;
+            getSelection().removeAllRanges(); //< otherwise users may select texts unpurposely
+            console.debug("mousemove");
+        };
+        const dragEnd = () => {
+            dragging = false;
+        }
+
+        button.addEventListener("mousedown", dragStart);
+        document.addEventListener("mousemove", dragGoing);
+        document.addEventListener("mouseup", dragEnd);
+
+        button.addEventListener("touchstart", event => {
+            event.preventDefault();
+            dragging = true;
+            const pos = averageTouchPosition(event.touches);
+            const rect = popup.getBoundingClientRect();
+            offsetX = pos.pageX - rect.left - isAbs * window.scrollX;
+            offsetY = pos.pageY - rect.top - isAbs * window.scrollY;
+            console.debug(pos);
+        }, {passive: false});
+
+        document.addEventListener("touchmove", event => {
+            if(!dragging) return;
+            event.preventDefault();
+            const pos = averageTouchPosition(event.touches);
+            const left = pos.pageX - offsetX;
+            const top = pos.pageY - offsetY;
+            const cs = getComputedStyle(popup);
+            popup.style.left = `calc(${left}px - ${cs.marginLeft})`;
+            popup.style.top = `calc(${top}px - ${cs.marginTop})`;
+            getSelection().removeAllRanges(); //< otherwise users may select texts unpurposely
+        }, {passive: false});
+
+        document.addEventListener("touchend", dragEnd);
+        document.addEventListener("touchcancel", dragEnd);
+
+
+    });
+</script>
+</body>
+</html>
