@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>不使用 JavaScript 實作分頁</title>
+<style type="text/css">
+    /**
+     * 關鍵處其實只有這樣
+     */
+    .tabset-radio {
+        display: none;
+    }
+    .tabset-radio:not(:checked) ~ * {
+        display: none;
+    }
+
+    /**
+     * 這邊都是排版而已
+     */
+    nav li {
+        list-style-type: none;
+        display: inline-block;
+        border: 1px solid #888;
+        border-radius: .3em;
+        margin: .3em .5em;
+        padding: 0;
+    }
+    nav label {
+        display: inline-block;
+        padding: .2em .3em;
+        cursor: pointer;
+    }
+    .pseudo-container {
+        margin: 0;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+    }
+    .tabset-content {
+        border: 1px solid #ccc;
+        border-radius: .5em;
+        min-height: 2em;
+        padding: .5em;
+    }
+</style>
+</head>
+<body>
+<h1>不使用 JavaScript 實作分頁</h1>
+<nav>
+    <ul>
+        <li><label for="tabset-01-radio-A">Tab A</label></li>
+        <li><label for="tabset-01-radio-B">Tab B</label></li>
+        <li><label for="tabset-01-radio-C">Tab C</label></li>
+    </ul>
+</nav>
+<main>
+    <div class="pseudo-container">
+        <input type="radio" class="tabset-radio" name="tabset-01-radio" id="tabset-01-radio-A">
+        <section class="tabset-content">content of A</section>
+    </div>
+    <div class="pseudo-container">
+        <input type="radio" class="tabset-radio" name="tabset-01-radio" id="tabset-01-radio-B">
+        <section class="tabset-content">content of B</section>
+    </div>
+    <div class="pseudo-container">
+        <input type="radio" class="tabset-radio" name="tabset-01-radio" id="tabset-01-radio-C">
+        <section class="tabset-content">content of C</section>
+    </div>
+</main>
+</body>
+</html>
