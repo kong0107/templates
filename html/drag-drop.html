@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>drag and drop</title>
+    <style>
+ol {
+    background-color: lightblue;
+    margin: 1em;
+    padding: 1em 2em;
+}
+ol.dragover {
+    background-color: lightcoral;
+}
+li {
+    padding: .5em;
+}
+li.dragging {
+    background-color: lightgreen;
+    cursor: grabbing;
+}
+li.before {
+    border-bottom: 2px solid red;
+}
+li.after {
+    border-top: 2px solid darkred;
+}
+    </style>
+</head>
+<body class="container">
+    <h1>drag and drop</h1>
+    <main class="row">
+        <section class="col-6 mb-4">
+            <h2 class="text-bg-primary">List 1</h2>
+            <ol class="list-group">
+                <li class="list-group-item" draggable="true">Item 1</li>
+                <li class="list-group-item" draggable="true">Item 2</li>
+            </ol>
+        </section>
+        <section class="col-6 mb-4">
+            <h2 class="text-bg-secondary">List 2</h2>
+            <ol class="list-group">
+                <li class="list-group-item" draggable="true">Item 3</li>
+                <li class="list-group-item" draggable="true">Item 4</li>
+            </ol>
+        </section>
+    </main>
+    <footer>
+        Reference: <a href="https://ithelp.ithome.com.tw/articles/10280217">MaxLeeBK</a>
+    </footer>
+    <script type="module">
+import kongUtil from 'https://cdn.jsdelivr.net/npm/kong-util/mod/all.mjs';
+kongUtil.use();
+let draggingElem = null, overItem = null;
+$$('ol').forEach(list => {
+    listen(list, 'dragenter', () => list.classList.add('dragover'));
+    listen(list, 'dragover', event => {
+        event.preventDefault(); // otherwise it's not dropbbable.
+        if(overItem) {
+            overItem.classList.remove('before', 'after');
+            overItem = null;
+        }
+        const t = event.target;
+        if(t.getAttribute('draggable') && t !== draggingElem) {
+            overItem = t;
+            t.classList.add((event.offsetY > t.offsetHeight / 2) ? 'before': 'after');
+        }
+    });
+    listen(list, 'dragleave', () => list.classList.remove('dragover')); // shall be improved; this also triggers when dragleave on descendants.
+    listen(list, 'drop', () => {
+        list.classList.remove('dragover');
+        if(overItem) {
+            if(overItem.classList.contains('before')) overItem.after(draggingElem);
+            else overItem.before(draggingElem);
+            overItem.classList.remove('before', 'after');
+            overItem = null;
+        }
+        else {
+            if(list.contains(draggingElem)) return;
+            list.append(draggingElem);
+        }
+    });
+});
+$$('li').forEach(item => {
+    listen(item, 'dragstart', () => {
+        item.classList.add('dragging');
+        draggingElem = item;
+    });
+    listen(item, 'dragend', () => {
+        item.classList.remove('dragging');
+        draggingElem = null;
+    });
+    // listen(item, 'dragover', event => {});
+});
+    </script>
+</body>
+</html>
