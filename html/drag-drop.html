@@ -15,6 +15,7 @@ ol.dragover {
 }
 li {
     padding: .5em;
+    cursor: grab;
 }
 li.dragging {
     background-color: lightgreen;
@@ -22,55 +23,57 @@ li.dragging {
 }
 li.before {
     border-bottom: 2px solid red;
+    background-color: #ffffff66;
 }
 li.after {
     border-top: 2px solid darkred;
+    background-color: #ffffff44;
 }
     </style>
 </head>
-<body class="container">
+<body>
     <h1>drag and drop</h1>
+    <p></p>
     <main class="row">
-        <section class="col-6 mb-4">
-            <h2 class="text-bg-primary">List 1</h2>
-            <ol class="list-group">
-                <li class="list-group-item" draggable="true">Item 1</li>
-                <li class="list-group-item" draggable="true">Item 2</li>
+        <section>
+            <h2>List 1</h2>
+            <ol>
+                <li draggable="true">Item 1</li>
+                <li draggable="true">Item 2</li>
             </ol>
         </section>
-        <section class="col-6 mb-4">
-            <h2 class="text-bg-secondary">List 2</h2>
-            <ol class="list-group">
-                <li class="list-group-item" draggable="true">Item 3</li>
-                <li class="list-group-item" draggable="true">Item 4</li>
+        <section>
+            <h2>List 2</h2>
+            <ol>
+                <li draggable="true">Item 3</li>
+                <li draggable="true">Item 4</li>
             </ol>
         </section>
     </main>
-    <footer>
-        Reference: <a href="https://ithelp.ithome.com.tw/articles/10280217">MaxLeeBK</a>
-    </footer>
+
     <script type="module">
-import kongUtil from 'https://cdn.jsdelivr.net/npm/kong-util/mod/all.mjs';
-kongUtil.use();
+import {$, $$, listen, logger, isEventInElement}
+    from 'https://cdn.jsdelivr.net/npm/kong-util/mod/all.mjs';
+
 let draggingElem = null, overItem = null;
-$$('ol').forEach(list => {
-    listen(list, 'dragenter', () => list.classList.add('dragover'));
-    listen(list, 'dragover', event => {
-        event.preventDefault(); // otherwise it's not dropbbable.
-        if(overItem) {
-            overItem.classList.remove('before', 'after');
-            overItem = null;
-        }
-        const t = event.target;
-        if(t.getAttribute('draggable') && t !== draggingElem) {
-            overItem = t;
-            t.classList.add((event.offsetY > t.offsetHeight / 2) ? 'before': 'after');
-        }
+$$('ol').forEach((list, index) => {
+    listen(list, 'dragenter', event => {
+        // logger(Date.now())(`list ${index+1} dragenter`, event.target);
+        list.classList.add('dragover');
     });
-    listen(list, 'dragleave', () => list.classList.remove('dragover')); // shall be improved; this also triggers when dragleave on descendants.
-    listen(list, 'drop', () => {
+    listen(list, 'dragover', event => {
+        event.preventDefault(); // Otherwise it is not droppable because `dragover` prevents `drop` by default.
+    });
+    listen(list, 'dragleave', event => {
+        // logger(Date.now())(`list ${index+1} dragleave`, event.target);
+        if(isEventInElement(event, list)) return; // `dragleave` also come from descendants. call `stopPropagate()` is not be a good idea since the container may not have padding.
         list.classList.remove('dragover');
-        if(overItem) {
+        overItem = null;
+    });
+    listen(list, 'drop', event => {
+        // logger(Date.now())(`list ${index+1} drop`, event.target);
+        list.classList.remove('dragover');
+        if(overItem && isEventInElement(event, overItem)) {
             if(overItem.classList.contains('before')) overItem.after(draggingElem);
             else overItem.before(draggingElem);
             overItem.classList.remove('before', 'after');
@@ -82,17 +85,51 @@ $$('ol').forEach(list => {
         }
     });
 });
-$$('li').forEach(item => {
-    listen(item, 'dragstart', () => {
+$$('li').forEach((item, index) => {
+    listen(item, 'dragstart', event => {
+        // logger(Date.now())(`item ${index+1} dragstart`, event.target);
         item.classList.add('dragging');
         draggingElem = item;
     });
-    listen(item, 'dragend', () => {
+    listen(item, 'dragend', event => {
+        // logger(Date.now())(`item ${index+1} dragend`, event.target);
         item.classList.remove('dragging');
         draggingElem = null;
+        overItem = null;
     });
-    // listen(item, 'dragover', event => {});
+    listen(item, 'dragenter', event => {
+        // logger(Date.now())(`item ${index+1} dragenter`, event.target);
+        if(event.target === draggingElem) return;
+        overItem = item;
+    });
+    listen(item, 'dragleave', event => {
+        // logger(Date.now())(`item ${index+1} dragleave`, event.target);
+        item.classList.remove('before', 'after');
+    });
+    listen(item, 'dragover', event => {
+        // logger(Date.now())(`item ${index+1} dragover`, event.target);
+        if(event.target === draggingElem) return;
+        item.className = (event.offsetY > item.offsetHeight / 2) ? 'before': 'after';
+    });
 });
     </script>
+
+
+    <h2>Note</h2>
+    <ul>
+        <li>An element is <em>draggable</em> by setting its <code>draggable</code> attribute.</li>
+        <li>
+            An element is <em>droppable</em> (able to receive draggable elements)
+            by disabling default behavior against <code>dragover</code> event.
+        </li>
+        <li>Drag and drop events bubbles from descendants to ancestors.</li>
+        <li>
+            For dragging from element A to element B,
+            <code>dragenter</code> on B happens before <code>dragleave</code> on A.
+        </li>
+    </ul>
+    <footer>
+        Reference: <a href="https://ithelp.ithome.com.tw/articles/10280217">MaxLeeBK</a>
+    </footer>
 </body>
 </html>
