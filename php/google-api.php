@@ -11,7 +11,7 @@
      *  2. 新增（或選擇）專案
      *  3. 啟用 Google Calendar API: https://console.cloud.google.com/apis/dashboard
      *  4. 新增（或選擇）服務帳戶: https://console.cloud.google.com/iam-admin/serviceaccounts
-     *  5. 在服務帳戶中新增金鑰，類型為 JSON ，把自動下載的檔案存好，並設定下方路徑。
+     *  5. 在服務帳戶中新增金鑰，類型為 JSON ，把自動下載的檔案存好（不可放在 DocumentRoot 裡，不然就設定 .htaccess ），並設定下方路徑。
      *  6. 找到「服務帳戶」的電郵地址。
      *  7. 在 Google Calendar 中將需要存取的日曆的「與特定使用者共用日曆」加入前述電郵地址（不用加入非開發者私人電郵）。
      *  8. 複製前述日曆 ID （格式同電郵）到下方變數。
