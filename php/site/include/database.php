@@ -77,7 +77,6 @@ class mysqlii extends mysqli {
         if(count($conditions))
             $sql .= ' WHERE ' . self::join_assoc($conditions, ' AND ');
 
-
         if($test) return $sql;
         return $this->get_all($sql);
     }
